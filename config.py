@@ -7,8 +7,8 @@ import os
 from dotenv import load_dotenv
 import streamlit as st
 
-# .env 로드
-load_dotenv()
+# .env 로드 (UTF-8 BOM 및 시스템 환경변수 오버라이드 대응)
+load_dotenv(override=True, encoding='utf-8-sig')
 
 # 기본 Threads 토큰 및 유저 ID 폴백
 DEFAULT_THREADS_TOKEN = "THAAW3tcaAYsZABYmI3dklLaDQ2SThBTURNMGJnTXFRZAVZAHZAzZAnZAWlkazYyWFJiX3htUHJ5alBfZAjRQdTNNTlctbHhJZAzJwZAlNZAZAGg0MXFBOVljQmJUcWFyaWdBbUhtSmh3UEduSXRXLVhMWThILV9IMHZAKeHdORFUyQTlkWGgwY2lXVWpRMkJHT3d6X25yZA2cZD"
@@ -72,6 +72,10 @@ INSTAGRAM_PASSWORD = "INSTAGRAM_PASSWORD"
 
 GEMINI_API_KEY = "GEMINI_API_KEY"
 OPENAI_API_KEY = "OPENAI_API_KEY"
+GROQ_API_KEY = "GROQ_API_KEY"          # 무료: https://console.groq.com
+OPENROUTER_API_KEY = "OPENROUTER_API_KEY"  # 무료: https://openrouter.ai
+NVIDIA_API_KEY = "NVIDIA_API_KEY"      # 무료: https://build.nvidia.com
+MISTRAL_API_KEY = "MISTRAL_API_KEY"    # 무료: https://console.mistral.ai (월 10억 토큰)
 
 NAVER_ID = "NAVER_ID"
 NAVER_PW = "NAVER_PW"

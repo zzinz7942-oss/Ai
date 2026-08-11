@@ -149,7 +149,7 @@ def approve_and_publish(draft_data: dict, caption_text: str, max_daily_limit: in
         i_res = post_to_instagram(caption=caption_text, image_path=thumb_path)
         results["instagram"] = i_res
 
-    # 성공 시 일일 횟수 차감
+    # 성공 시 일일 횟수 증가
     increment_daily_post_count()
 
     return {

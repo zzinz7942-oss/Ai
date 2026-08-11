@@ -1,11 +1,11 @@
 .env
-token.json
-client_secrets.json
-blogger_auto_post/token.json
-blogger_auto_post/client_secrets.json
+.env.backup
 __pycache__/
 *.pyc
+.streamlit/
+test_output/
 *.mp4
+*.mp3
 *.jpg
 *.png
-live_url.txt
+.DS_Store

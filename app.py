@@ -63,6 +63,9 @@ st.markdown("""
         display: inline-block;
     }
 </style>
+
+<!-- 크롬 자동 번역으로 인한 React 충돌(removeChild 에러) 원천 차단 -->
+<meta name="google" content="notranslate">
 """, unsafe_allow_html=True)
 
 
@@ -485,8 +488,9 @@ with tab6:
             post_i = st.checkbox("📸 Instagram 업로드", value=False, key="tab6_insta")
 
             if st.button("✅ 최종 검수 승인 & SNS 자동 업로드", type="primary", use_container_width=True):
-                if daily_count >= max_limit:
-                    st.error(f"⚠️ 일일 안전 제한({daily_count}/{max_limit}회)에 도달하여 추가 업로드가 차단되었습니다.")
+                current_count = get_daily_post_count()  # 버튼 클릭 시점의 최신 횟수 재조회
+                if current_count >= max_limit:
+                    st.error(f"⚠️ 일일 안전 제한({current_count}/{max_limit}회)에 도달하여 추가 업로드가 차단되었습니다.")
                 else:
                     with st.spinner("최종 승인된 포스트를 SNS에 게시 중입니다..."):
                         pub_res = approve_and_publish(
