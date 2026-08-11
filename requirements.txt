@@ -4,3 +4,6 @@ requests
 Pillow
 moviepy
 edge-tts
+opencv-python-headless
+yt-dlp
+google-generativeai
