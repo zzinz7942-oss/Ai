@@ -9,3 +9,4 @@ yt-dlp
 google-generativeai
 instagrapi
 playwright
+numpy<2.0.0
