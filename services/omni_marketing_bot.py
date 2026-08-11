@@ -6,8 +6,6 @@
 
 import os
 import time
-import tempfile
-from playwright.sync_api import sync_playwright
 
 from services.naver_bot_service import run_naver_blog_bot
 from services.threads_service import post_to_threads
