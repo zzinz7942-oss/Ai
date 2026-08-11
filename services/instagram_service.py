@@ -5,10 +5,11 @@
 """
 
 import os
+from typing import Optional
 from config import get_config, INSTAGRAM_USERNAME, INSTAGRAM_PASSWORD
 
 
-def post_to_instagram(caption: str, image_path: str | None = None, video_path: str | None = None) -> dict:
+def post_to_instagram(caption: str, image_path: Optional[str] = None, video_path: Optional[str] = None) -> dict:
     """
     instagrapi를 사용하여 인스타그램 피드에 이미지 또는 비디오를 게시합니다.
     """

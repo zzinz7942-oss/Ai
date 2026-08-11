@@ -9,10 +9,11 @@ Threads 포스팅 서비스 (Threads Service)
 import os
 import time
 import requests
+from typing import Optional
 from config import get_config, THREADS_ACCESS_TOKEN, THREADS_USER_ID
 
 
-def upload_to_catbox(file_path: str) -> str | None:
+def upload_to_catbox(file_path: str) -> Optional[str]:
     """
     로컬 이미지 파일을 catbox.moe에 업로드하고 공개 URL을 반환합니다.
     """
@@ -34,7 +35,7 @@ def upload_to_catbox(file_path: str) -> str | None:
     return None
 
 
-def post_to_threads(text: str, image_path: str | None = None) -> dict:
+def post_to_threads(text: str, image_path: Optional[str] = None) -> dict:
     """
     Threads에 텍스트 또는 이미지+텍스트 포스트를 업로드합니다.
     """
