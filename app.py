@@ -109,6 +109,12 @@ with st.sidebar:
             set_config(config.NAVER_PW, n_pass)
             st.success("네이버 계정 정보가 저장되었습니다.")
 
+    with st.expander("🤖 Gemini AI 엔진 (무료 키)", expanded=False):
+        g_key = st.text_input("Gemini API Key", value=get_config(config.GEMINI_API_KEY), type="password")
+        if st.button("AI 키 저장"):
+            set_config(config.GEMINI_API_KEY, g_key)
+            st.success("Gemini API 키가 저장되었습니다.")
+
     st.divider()
     st.info("💡 모든 설정 정보는 로컬에 안전하게 저장됩니다.")
 
