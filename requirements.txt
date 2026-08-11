@@ -8,3 +8,4 @@ opencv-python-headless
 yt-dlp
 google-generativeai
 instagrapi
+playwright

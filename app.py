@@ -11,7 +11,6 @@ from PIL import Image
 import config
 from config import get_config, set_config
 from services.analyzer import analyze_media_content
-from services.coupang_api import search_coupang_products, create_deeplink
 from services.content_generator import generate_marketing_caption
 from services.threads_service import post_to_threads
 from services.instagram_service import post_to_instagram
@@ -20,7 +19,7 @@ from services.instagram_service import post_to_instagram
 # Streamlit 페이지 설정 및 커스텀 스타일링
 # ─────────────────────────────────────────────
 st.set_page_config(
-    page_title="Auto-Marketing Studio (Coupang & Social)",
+    page_title="과일대장 오토 마케팅 스튜디오",
     page_icon="🚀",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -94,16 +93,6 @@ with st.sidebar:
             else:
                 st.warning("Access Token과 User ID를 모두 입력해주세요.")
 
-    with st.expander("🛍️ 쿠팡 파트너스 API", expanded=False):
-        c_access = st.text_input("Access Key", value=get_config(config.COUPANG_ACCESS_KEY), type="password")
-        c_secret = st.text_input("Secret Key", value=get_config(config.COUPANG_SECRET_KEY), type="password")
-        c_subid = st.text_input("Sub ID (선택)", value=get_config(config.COUPANG_SUB_ID, "my_app"))
-        if st.button("쿠팡 키 저장"):
-            set_config(config.COUPANG_ACCESS_KEY, c_access)
-            set_config(config.COUPANG_SECRET_KEY, c_secret)
-            set_config(config.COUPANG_SUB_ID, c_subid)
-            st.success("쿠팡 API 키가 저장되었습니다.")
-
     with st.expander("📸 Instagram 계정", expanded=False):
         i_user = st.text_input("Username (아이디)", value=get_config(config.INSTAGRAM_USERNAME))
         i_pass = st.text_input("Password (비밀번호)", value=get_config(config.INSTAGRAM_PASSWORD), type="password")
@@ -112,14 +101,16 @@ with st.sidebar:
             set_config(config.INSTAGRAM_PASSWORD, i_pass)
             st.success("인스타그램 계정 정보가 저장되었습니다.")
 
-    with st.expander("🤖 AI Vision & Content API", expanded=False):
-        g_key = st.text_input("Gemini API Key", value=get_config(config.GEMINI_API_KEY), type="password")
-        if st.button("AI 키 저장"):
-            set_config(config.GEMINI_API_KEY, g_key)
-            st.success("Gemini API 키가 저장되었습니다.")
+    with st.expander("📝 네이버 블로그 계정", expanded=False):
+        n_user = st.text_input("네이버 아이디", value=get_config(config.NAVER_ID))
+        n_pass = st.text_input("네이버 비밀번호", value=get_config(config.NAVER_PW), type="password")
+        if st.button("네이버 정보 저장"):
+            set_config(config.NAVER_ID, n_user)
+            set_config(config.NAVER_PW, n_pass)
+            st.success("네이버 계정 정보가 저장되었습니다.")
 
     st.divider()
-    st.info("💡 모든 설정 정보는 .env 및 세션에 안전하게 저장됩니다.")
+    st.info("💡 모든 설정 정보는 로컬에 안전하게 저장됩니다.")
 
 
 # ─────────────────────────────────────────────
@@ -162,13 +153,13 @@ with tab1:
     st.subheader("1. 분석할 미디어 제공")
     col1, col2 = st.columns([1, 1])
 
-    input_mode = st.radio("입력 방식 선택:", ["인스타그램 영상 또는 쿠팡 상품 URL 입력", "화면 캡처 이미지 업로드"], horizontal=True)
+    input_mode = st.radio("입력 방식 선택:", ["인스타그램 영상 URL 입력", "화면 캡처 이미지 업로드"], horizontal=True)
 
     target_media = None
     is_url = False
 
-    if input_mode == "인스타그램 영상 또는 쿠팡 상품 URL 입력":
-        url_input = st.text_input("인스타그램 게시물/릴스 또는 쿠팡 상품 URL", placeholder="https://www.instagram.com/reel/... 또는 https://link.coupang.com/a/...")
+    if input_mode == "인스타그램 영상 URL 입력":
+        url_input = st.text_input("인스타그램 게시물/릴스 URL", placeholder="https://www.instagram.com/reel/...")
         if url_input:
             target_media = url_input.strip()
             is_url = True
@@ -189,13 +180,11 @@ with tab1:
                 res = analyze_media_content(target_media, is_url=is_url)
                 if res.get("success"):
                     st.session_state.analysis_data = res
-                    if res.get("is_coupang") and res.get("deeplink_url"):
-                        st.session_state.deeplink_url = res["deeplink_url"]
-                    st.success("미디어/쿠팡 상품 분석 완료!")
+                    st.success("미디어/게시물 분석 완료!")
                 else:
                     st.error(f"분석 실패: {res.get('error')}")
 
-    # 분석 결과 표출 및 쿠팡 상품 검색
+    # 분석 결과 표출
     if st.session_state.analysis_data:
         data = st.session_state.analysis_data.get("data", {})
         analyzed_img = st.session_state.analysis_data.get("analyzed_image_path")
@@ -215,40 +204,7 @@ with tab1:
             keywords = data.get('keywords', [])
             st.markdown(f"**추천 검색 키워드:** {', '.join(keywords)}")
 
-        st.divider()
-        st.markdown("### 🛒 쿠팡 파트너스 상품 검색 & 딥링크 매칭")
-        search_kw = st.text_input("쿠팡 검색 키워드 수정/확인", value=keywords[0] if keywords else data.get('product_name', ''))
-        
-        if st.button("쿠팡 상품 검색", use_container_width=True):
-            with st.spinner(f"'{search_kw}' (으)로 쿠팡 파트너스 API 검색 중..."):
-                coupang_res = search_coupang_products(search_kw)
-                if coupang_res.get("success"):
-                    st.session_state.products = coupang_res.get("products", [])
-                    st.success(f"총 {len(st.session_state.products)}개의 상품이 검색되었습니다.")
-                else:
-                    st.error(coupang_res.get("error"))
 
-        if "products" in st.session_state and st.session_state.products:
-            st.markdown("#### 매칭할 상품 선택")
-            for idx, prod in enumerate(st.session_state.products):
-                p_col1, p_col2, p_col3 = st.columns([1, 3, 1])
-                with p_col1:
-                    st.image(prod.get("productImage"), width=80)
-                with p_col2:
-                    st.markdown(f"**{prod.get('productName')}**")
-                    st.markdown(f"가격: **{prod.get('productPrice'):,}원**")
-                with p_col3:
-                    if st.button(f"선택 & 딥링크 생성", key=f"select_{idx}"):
-                        st.session_state.selected_product = prod
-                        # 딥링크 생성
-                        orig_url = prod.get("productUrl")
-                        deep_res = create_deeplink([orig_url])
-                        if deep_res.get("success") and deep_res.get("deeplinks"):
-                            st.session_state.deeplink_url = deep_res["deeplinks"][0].get("shortUrl", orig_url)
-                            st.success("딥링크 생성 완료!")
-                        else:
-                            st.session_state.deeplink_url = orig_url
-                            st.info("기본 원본 링크 적용")
 
 
 # ─────────────────────────────────────────────
