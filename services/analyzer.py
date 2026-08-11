@@ -150,7 +150,7 @@ def parse_coupang_url(url: str, output_dir: str) -> dict:
     """
     import re
     from config import get_config, GEMINI_API_KEY
-    from services.coupang_api import search_coupang_products, create_deeplink
+
 
     # 1. 딥링크 URL 변환/추적
     final_url = url

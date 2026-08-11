@@ -14,7 +14,7 @@ from datetime import datetime
 from PIL import Image
 
 from services.agent_reach_service import run_agent_reach_command
-from services.coupang_api import search_coupang_products, create_deeplink
+
 from services.content_generator import generate_marketing_caption
 from services.threads_service import post_to_threads
 from services.instagram_service import post_to_instagram
@@ -72,30 +72,12 @@ def generate_pipeline_draft(topic_keyword: str) -> dict:
     else:
         log("ℹ️ 기본 키워드 모드로 전환")
 
-    # Step 2: 쿠팡 상품 매칭
-    log("2️⃣ 쿠팡 파트너스 API 상품 검색 및 딥링크 생성...")
-    coupang_res = search_coupang_products(topic_keyword, limit=3)
-    
+    # Step 2: 쿠팡 상품 매칭 (제거됨)
     selected_prod = None
     deeplink_url = ""
     p_name = topic_keyword
     p_price = 0
-
-    if coupang_res.get("success") and coupang_res.get("products"):
-        selected_prod = coupang_res["products"][0]
-        p_name = selected_prod.get("productName", topic_keyword)
-        p_price = selected_prod.get("productPrice", 0)
-        orig_url = selected_prod.get("productUrl", "")
-        log(f"✅ 매칭된 상품: '{p_name}' ({p_price:,}원)")
-
-        dl_res = create_deeplink([orig_url])
-        if dl_res.get("success") and dl_res.get("deeplinks"):
-            deeplink_url = dl_res["deeplinks"][0].get("shortUrl", orig_url)
-            log(f"✅ 제휴 딥링크 생성 완료: {deeplink_url}")
-        else:
-            deeplink_url = orig_url
-    else:
-        log("ℹ️ 일반 트렌드 캡션 모드로 작성")
+    log("ℹ️ 일반 트렌드 캡션 모드로 작성")
 
     # Step 3: AI 마케팅 캡션 생성
     log("3️⃣ AI 엔진으로 SNS 마케팅 캡션 초안 생성 완료")
