@@ -148,7 +148,8 @@ tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs([
     "🌐 5. Agent Reach 무제한 웹/소셜 크롤러",
     "⚡ 6. 원클릭 수익화 파이프라인 (세이프티)",
     "🍓 7. 과일가게 홍보카드 & 문구 생성기",
-    "📱 8. 24시간 모바일 무인 모니터링 & 클라우드 헬스 센터"
+    "📱 8. 24시간 모바일 무인 모니터링 & 클라우드 헬스 센터",
+    "🏪 9. 스토어 재고 검색 및 비교"
 ])
 
 
@@ -847,4 +848,33 @@ with tab8:
     st.info("💡 본 프로그램은 Streamlit Cloud & GitHub 파이프라인으로 연결되어 사장님의 PC 본체를 완전히 꺼두셔도 매일 아침 8시 자동 홍보 + 손님 문의 1초 자동 답장이 24시간 365일 상시 동작합니다.")
 
 
-
+# ─────────────────────────────────────────────
+# TAB 9: 스토어 재고 검색 및 비교 (다이소/GS25/올리브영)
+# ─────────────────────────────────────────────
+with tab9:
+    st.subheader("🏪 다이소 / GS25 / 올리브영 통합 검색 & 비교 리포트 (OmniRoute 무료 AI)")
+    st.markdown("강력한 3사 실제 크롤링 데이터와 회원님의 **무료 OmniRoute AI(Groq, Mistral 등)**를 활용해 1원도 내지 않고 비교 블로그 포스팅을 자동 생성합니다.")
+    
+    st_col1, st_col2 = st.columns([2, 1])
+    with st_col1:
+        store_keyword = st.text_input("검색할 상품 키워드를 입력하세요 (예: 선크림, 보조배터리, 텀블러)", value="텀블러")
+    with st_col2:
+        st.write("")
+        st.write("")
+        btn_store_search = st.button("🚀 통합 검색 및 블로그 리포트 작성", type="primary", use_container_width=True)
+    
+    if btn_store_search:
+        if not store_keyword.strip():
+            st.error("검색어를 입력해주세요!")
+        else:
+            with st.spinner(f"'{store_keyword}' 상품을 다이소, GS25, 올리브영에서 긁어오고 있습니다... (약 10~20초 소요)"):
+                from services.store_search import generate_blog_report_omniroute
+                res = generate_blog_report_omniroute(store_keyword.strip())
+                
+                if res.get("success"):
+                    st.success(f"✅ 검색 및 작성 완료! (사용된 AI: {res.get('provider')})")
+                    st.markdown("### 📝 자동 생성된 비교 블로그 포스팅")
+                    st.markdown(res.get("report"))
+                else:
+                    st.error("❌ 크롤링 또는 AI 글쓰기 중 오류가 발생했습니다.")
+                    st.text_area("원시 크롤링 데이터", res.get("report", ""), height=300)

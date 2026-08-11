@@ -10,3 +10,4 @@ google-generativeai
 instagrapi
 playwright
 numpy<2.0.0
+beautifulsoup4
