@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans KR',sans-serif;background:#0a0a0a}
+.card{width:540px;height:540px;position:relative;overflow:hidden;background:linear-gradient(145deg,#1a1a2e 0%,#16213e 40%,#0f3460 100%)}
+
+/* 배경 장식 */
+.bg-glow{position:absolute;border-radius:50%;filter:blur(60px);opacity:0.3}
+.glow1{width:300px;height:300px;background:#e94560;top:-80px;right:-60px}
+.glow2{width:200px;height:200px;background:#f97316;bottom:40px;left:-40px}
+.glow3{width:150px;height:150px;background:#eab308;bottom:-30px;right:80px}
+
+/* 상단 태그 */
+.tag{position:absolute;top:28px;left:32px;font-size:11px;font-weight:700;letter-spacing:2px;color:#e94560;text-transform:uppercase;display:flex;align-items:center;gap:6px;z-index:10}
+.tag::before{content:'';width:18px;height:2px;background:#e94560}
+
+/* 할인 뱃지 */
+.badge{position:absolute;top:22px;right:28px;background:linear-gradient(135deg,#e94560,#d63384);color:#fff;font-size:22px;font-weight:900;padding:10px 16px;border-radius:12px;z-index:10;box-shadow:0 4px 20px rgba(233,69,96,0.4)}
+
+/* 메인 텍스트 */
+.main-text{position:absolute;top:80px;left:32px;right:32px;z-index:10}
+.hook{font-size:26px;font-weight:900;color:#fff;line-height:1.4;margin-bottom:16px;word-break:keep-all}
+.hook em{font-style:normal;color:#f59e0b;background:linear-gradient(transparent 60%,rgba(245,158,11,0.25) 60%)}
+.sub{font-size:14px;color:rgba(255,255,255,0.6);line-height:1.6}
+
+/* 체크리스트 */
+.checklist{position:absolute;bottom:145px;left:32px;right:32px;z-index:10;display:flex;flex-direction:column;gap:10px}
+.check-item{display:flex;align-items:center;gap:10px;font-size:14px;color:rgba(255,255,255,0.9);font-weight:500}
+.check-icon{width:22px;height:22px;border-radius:6px;background:linear-gradient(135deg,#22c55e,#16a34a);display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;flex-shrink:0;font-weight:700}
+
+/* 가격 바 */
+.price-bar{position:absolute;bottom:50px;left:32px;right:32px;z-index:10;display:flex;align-items:flex-end;justify-content:space-between}
+.price-area{}
+.original{font-size:13px;color:rgba(255,255,255,0.35);text-decoration:line-through;margin-bottom:2px}
+.current{font-size:28px;font-weight:900;color:#fff}
+.current span{font-size:16px;font-weight:500}
+.cta{background:linear-gradient(135deg,#e94560,#d63384);color:#fff;font-size:13px;font-weight:700;padding:12px 22px;border-radius:10px;letter-spacing:0.5px;box-shadow:0 4px 20px rgba(233,69,96,0.35)}
+
+/* 하단 라인 */
+.bottom-line{position:absolute;bottom:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#e94560,#f97316,#eab308,#22c55e)}
+
+/* 미세한 그리드 패턴 */
+.grid-pattern{position:absolute;top:0;left:0;right:0;bottom:0;background-image:
+  linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),
+  linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);
+background-size:40px 40px;z-index:1}
+
+/* 아이콘 장식 */
+.icon-deco{position:absolute;font-size:60px;z-index:2;opacity:0.08}
+.icon1{top:90px;right:25px}
+.icon2{bottom:160px;right:35px}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="bg-glow glow1"></div>
+  <div class="bg-glow glow2"></div>
+  <div class="bg-glow glow3"></div>
+  <div class="grid-pattern"></div>
+
+  <div class="icon-deco icon1">🍳</div>
+  <div class="icon-deco icon2">✨</div>
+
+  <div class="tag">AD · 주방꿀템</div>
+  <div class="badge">52%</div>
+
+  <div class="main-text">
+    <div class="hook">요리할 때마다<br><em>기름 튀어서</em><br>빡치는 사람 여기요 🙋</div>
+    <div class="sub">투명 가림막 하나로 기름때 스트레스 끝.</div>
+  </div>
+
+  <div class="checklist">
+    <div class="check-item"><div class="check-icon">✓</div>투명이라 주방 인테리어 안 망침</div>
+    <div class="check-item"><div class="check-icon">✓</div>기름 튀어도 닦으면 끝 — 세척 초간단</div>
+    <div class="check-item"><div class="check-icon">✓</div>가스레인지 / 인덕션 둘 다 OK</div>
+    <div class="check-item"><div class="check-icon">✓</div>한 달 200명+ 구매 — 리뷰 168개</div>
+  </div>
+
+  <div class="price-bar">
+    <div class="price-area">
+      <div class="original">32,500원</div>
+      <div class="current">15,400<span>원</span></div>
+    </div>
+    <div class="cta">👇 링크 확인하기</div>
+  </div>
+
+  <div class="bottom-line"></div>
+</div>
+</body>
+</html>

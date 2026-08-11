@@ -1,0 +1,11 @@
+.env
+token.json
+client_secrets.json
+blogger_auto_post/token.json
+blogger_auto_post/client_secrets.json
+__pycache__/
+*.pyc
+*.mp4
+*.jpg
+*.png
+live_url.txt
